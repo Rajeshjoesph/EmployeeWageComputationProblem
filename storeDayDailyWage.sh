@@ -9,6 +9,8 @@ ratePerHour=20;
 WorkDays=20;
 day=1;
 
+declare -A day
+
 function getworkingHours() {
          case $randomCheck in
                 $FULL_TIME)
@@ -23,26 +25,24 @@ function getworkingHours() {
         esac
         echo $employeeHours
 }
-
 while [[ $day -le 20 && $totalWorkHours -lt 100	]]
 do
 	randomCheck=$((RANDOM%3));
 	workHour=$(getworkingHours $randomCheck)
 	totalWorkHour=$(($totalWorkHour+$workHour))
 
-if [ $totalWorkHour -gt 100 ]
-then
-	totalWorkHour=$(($totalWorkHour - $workHour));
-	break
-fi
-
-salary=$(($ratePerHour*$workHour))
-totalSalary=$(($totalSalary+$salary))
-((day++))
-
-
+	if [ $totalWorkHour -gt 100 ]
+	then
+		totalWorkHour=$(($totalWorkHour - $workHour));
+		break
+	fi
+	salary=$(($ratePerHour*$workHour))
+	totalSalary=$(($totalSalary+$salary))
+	((day++))
 done
-echo "Employee Salary "${salary[*]}
-echo "Employee Total Salary "${totalSalary[*]}
 
-echo "Employee Total Salary :"$totalWorkHour
+echo "Employee Daily Salary:" ${salary[*]}
+echo "employee total Salary:" ${totalSalary[*]}
+echo "Employee Day  Salary:" ${day[*]}
+
+echo "employee total Work Hours:" $totalWorkHour
